@@ -1,14 +1,14 @@
-# DSA 210 — Personalized Sleep Quality Prediction
+# DSA 210 — Personalized Well-being Prediction from Sleep & Lifestyle Data
 
 **Author:** Deniz Elbek
-**Term:** Spring 2026  
+**Term:** Spring 2026
 **Course:** DSA 210 Introduction to Data Science
 
 ---
 
 ## Project Overview
 
-This project investigates how sleep metrics, lifestyle habits, and environmental conditions predict two personal outcomes: morning feel rating (how rested one feels upon waking) and daily productivity rating using 45 consecutive nights of self-collected data. The goal is to build a dual-target model that jointly predicts a nightly sleep score (morning feel rating) and the following day's productivity rating, and to identify the full set of personal conditions — including sleep duration, timing, caffeine intake, alcohol consumption, meal timing, screen time, and physical activity — that simultaneously maximize both outcomes.
+This project investigates how sleep metrics, lifestyle habits, and environmental conditions predict two personal outcomes: morning feel rating (how rested one feels upon waking) and daily productivity rating. Data was collected over 34 nights (April 1 – May 4, 2026) using an Apple Watch, a daily self-log, and external API enrichment. A dual-target model jointly predicts both outcomes and identifies the full set of personal conditions that simultaneously maximize them.
 
 ---
 
@@ -16,7 +16,10 @@ This project investigates how sleep metrics, lifestyle habits, and environmental
 
 ```
 ├── notebooks/
-│   └── eda.ipynb               # Milestone 1: EDA & hypothesis tests
+│   ├── eda.ipynb               # Milestone 1: EDA & hypothesis tests
+│   ├── eda_run.ipynb           # Milestone 1: executed with outputs
+│   ├── ml_models.ipynb         # Milestone 2: ML models & SHAP analysis
+│   └── ml_models_run.ipynb     # Milestone 2: executed with outputs
 ├── requirements.txt            # Python dependencies
 ├── .gitignore                  # Excludes data folder (private health data)
 └── README.md
@@ -30,7 +33,7 @@ This project investigates how sleep metrics, lifestyle habits, and environmental
 
 | Source | Features | Collection Method |
 |---|---|---|
-| Apple Watch (Apple Health XML) | Sleep stages, HRV, SpO₂, HR, steps, calories, exercise | Exported via Health app |
+| Apple Watch (Apple Health XML) | Sleep stages, HRV, SpO₂, HR, steps, calories, exercise, Apple sleep score | Exported via Health app |
 | Apple Screen Time | Pre-sleep screen usage | Apple Screen Time export |
 | Daily Self-Log | Morning feel (1–10), productivity (1–10), caffeine, alcohol, meal timing | Manual log filled each morning/evening |
 | OpenWeatherMap API | Temperature, humidity, barometric pressure | Automatic API retrieval |
@@ -44,8 +47,8 @@ This project investigates how sleep metrics, lifestyle habits, and environmental
 |---|---|---|
 | 17 Mar 2026 | GitHub repo created | ✅ Done |
 | 31 Mar 2026 | Project proposal submitted | ✅ Done |
-| 14 Apr 2026 | EDA & hypothesis tests (preliminary, ~14 days data) | ✅ Done |
-| 5 May 2026 | ML models applied | 🔲 Pending |
+| 14 Apr 2026 | EDA & hypothesis tests (preliminary, ~13 nights) | ✅ Done |
+| 5 May 2026 | ML models applied (full dataset, 28 complete nights) | ✅ Done |
 | 18 May 2026 | Final report & code | 🔲 Pending |
 
 ---
@@ -60,16 +63,17 @@ cd dsa_210
 # Install dependencies
 pip install -r requirements.txt
 
-# Launch notebooks
+# Run notebooks
 jupyter notebook notebooks/eda.ipynb
+jupyter notebook notebooks/ml_models.ipynb
 ```
 
 ---
 
-## Known Limitations (Milestone 1)
+## Known Limitations
 
-- **Sample size:** Only ~13 nights of data available at this milestone (April 1–14, excluding April 10 where the Watch was not worn). Full 45-night dataset will be available by the ML submission.
-- **Missing physiological metrics:** HRV, SpO₂, and resting heart rate are unavailable for April 1–5 as the Apple Watch requires a calibration period before logging these metrics.
-- **Self-log reliability:** Some entries may contain minor logging inaccuracies due to the self-reported nature of the data. This is documented as a limitation.
-- **External noise confound:** Elevated awake-time readings on several nights are attributable to environmental disturbance (roommate snoring) rather than controllable lifestyle factors. This is visible as a confound in the awake_min feature.
-- **No screen time data yet:** Apple Screen Time export integration is planned for the final submission.
+- **Sample size (n=28 complete nights):** 6 nights excluded due to Apple Watch not being worn. Full generalizability is limited.
+- **Missing physiological metrics:** HRV, SpO₂, and resting HR unavailable for first 5 nights (Apple Watch calibration period); handled via median imputation.
+- **Self-log reliability:** Self-reported ratings may carry minor inaccuracies; documented as a limitation.
+- **Environmental confound:** Elevated awake-time on several nights attributable to roommate snoring rather than controllable lifestyle factors.
+- **No screen time data:** Apple Screen Time extraction planned for final report.
